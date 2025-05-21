@@ -6,8 +6,16 @@ struct ProfileView: View {
     var body: some View {
         VStack {
             if let url = user.profile.avatarURL {
-                // TODO: load image from URL
-                Image(systemName: "person.crop.circle")
+                if #available(iOS 15.0, *) {
+                    AsyncImage(url: url) { image in
+                        image.resizable().scaledToFit()
+                    } placeholder: {
+                        Image(systemName: "person.crop.circle")
+                    }
+                    .frame(width: 100, height: 100)
+                } else {
+                    Image(systemName: "person.crop.circle")
+                }
             } else {
                 Image(systemName: "person.crop.circle")
             }

@@ -13,7 +13,7 @@ self) { userID in
         }
         .navigationTitle("Messages")
         .onAppear {
-            // TODO: load conversation list
+            messageVM.conversations = DataStore.shared.messages
         }
     }
 }
