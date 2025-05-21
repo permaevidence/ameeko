@@ -12,7 +12,9 @@ struct PostDetailView: View {
             Text("Comments")
                 .font(.headline)
             List {
-                // TODO: show comments
+                ForEach(DataStore.shared.comments[post.id] ?? []) { comment in
+                    Text(comment.content)
+                }
             }
             HStack {
                 TextField("Add a comment", text: $commentText)
