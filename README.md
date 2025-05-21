@@ -12,3 +12,6 @@ and run.
 * Send messages to other users
 
 All data is stored locally during runtime; no backend services are required.
+
+Login and registration now persist the created user in an in-memory `DataStore`
+so the profile tab reflects the currently authenticated user.

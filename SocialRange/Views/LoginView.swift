@@ -5,6 +5,8 @@ struct LoginView: View {
     @State private var password: String = ""
     @State private var showRegister: Bool = false
     @State private var isLoggedIn: Bool = false
+    @EnvironmentObject var userVM: UserViewModel
+    @State private var loginFailed: Bool = false
 
     var body: some View {
         VStack {
@@ -13,16 +15,26 @@ struct LoginView: View {
             SecureField("Password", text: $password)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
             Button("Login") {
-                // handle login
-                isLoggedIn = true
+                userVM.login(email: email, password: password)
+                if userVM.currentUser != nil {
+                    isLoggedIn = true
+                } else {
+                    loginFailed = true
+                }
+            }
+            .alert(isPresented: $loginFailed) {
+                Alert(title: Text("Login Failed"),
+                      message: Text("Invalid credentials"),
+                      dismissButton: .default(Text("OK")))
             }
             Button("Create Account") {
                 showRegister = true
             }
             .sheet(isPresented: $showRegister) {
                 RegisterView()
+                    .environmentObject(userVM)
             }
-            NavigationLink("", destination: MainTabView(), isActive: $isLoggedIn)
+            NavigationLink("", destination: MainTabView().environmentObject(userVM), isActive: $isLoggedIn)
                 .hidden()
         }
         .padding()
@@ -32,5 +44,6 @@ struct LoginView: View {
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
         LoginView()
+            .environmentObject(UserViewModel())
     }
 }

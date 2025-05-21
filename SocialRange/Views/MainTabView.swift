@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct MainTabView: View {
+    @EnvironmentObject var userVM: UserViewModel
+
     var body: some View {
         TabView {
             NavigationView { FeedView() }
@@ -12,7 +14,7 @@ struct MainTabView: View {
                     Label("Messages", systemImage: "bubble.left.and.bubble.right")
                 }
             NavigationView {
-                if let user = UserViewModel().currentUser {
+                if let user = userVM.currentUser {
                     ProfileView(user: user)
                 } else {
                     Text("No profile")
@@ -28,5 +30,6 @@ struct MainTabView: View {
 struct MainTabView_Previews: PreviewProvider {
     static var previews: some View {
         MainTabView()
+            .environmentObject(UserViewModel())
     }
 }
